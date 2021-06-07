@@ -25,8 +25,8 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6" };
-static const char *alttags[] = { "1*", "2*", "3*", "4*", "5*", "6*" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *alttags[] = { "1*", "2*", "3*", "4*", "5*", "6*", "7*", "8*", "9*" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -35,10 +35,12 @@ static const Rule rules[] = {
 	 */
 	/* class              instance      title       tags mask     isfloating   monitor */
 	{ "Gimp",             NULL,         NULL,       0,            1,           -1 },
-	{ "Firefox",          NULL,         NULL,       1 << 1,       0,           -1 },
+	{ "firefox",          "Navigator",  NULL,       1 << 1,       0,           -1 },
+	{ "firefox",          "Toolkit",    NULL,       1 << 1,       1,           -1 },
 	{ "Thunderbird",      "Mail",       NULL,       1 << 2,       0,           -1 },
 	{ "Thunderbird",      "Msgcompose", NULL,       1 << 3,       0,           -1 },
 	{ "jetbrains-studio", NULL,         NULL,       1 << 4,       1,           -1 },
+        { "XClipboard",       NULL,         NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -66,7 +68,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]   = { "dmenu_run", "-m", dmenumon };
+static const char *dmenucmd[]   = { "dmenu_run", "-m", dmenumon, "-g", "7", "-l", "5" };
 
 static const char *termcmd[]    = { "st", NULL };
 static const char *tmuxcmd[]    = { "st", "-e", "tmux", NULL };
@@ -85,7 +87,11 @@ static const char *xbldncmd[]   = { "xbacklight", "-10", NULL };
 static const char *sleepcmd[]   = { "sudo", "-A", "zzz", NULL };
 
 static const char *scrotcmd[]   = { "scrot", "-e", "mv $f screenshots", NULL };
-static const char *scrotscmd[]   = { "scrot", "-s",  "-e", "mv $f screenshots", NULL };
+static const char *scrotscmd[]  = { "scrot", "-s",  "-e", "mv $f screenshots", NULL };
+
+static const char *xclipcmd[]   = { "xclipboard", "-bg", "rgb:5/8/9", "-fg", "rgb:D/D/D", "-bd", "rgb:C/C/C", "-fn", "-*-tewi-medium-r-*-*-11-*-*-*-*-*-*-*", "-geometry", "300x50+0-0", NULL };
+
+static const char *swmapcmd[]   = { "switchmap", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -98,11 +104,13 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F8,     spawn,          {.v = volupcmd } },
 	{ MODKEY,                       XK_F7,     spawn,          {.v = voldncmd } },
 	{ MODKEY,                       XK_F6,     spawn,          {.v = volmtcmd } },
+	{ MODKEY,                       XK_F4,     spawn,          {.v = swmapcmd } },
 	{ MODKEY,                       XK_F3,     spawn,          {.v = xblupcmd } },
 	{ MODKEY,                       XK_F2,     spawn,          {.v = xbldncmd } },
 	{ MODKEY,                       XK_F1,     spawn,          {.v = sleepcmd } },
 	{ MODKEY,                       XK_s,      spawn,          {.v = scrotcmd } },
 	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = scrotscmd } },
+        { MODKEY,                       XK_c,      spawn,          {.v = xclipcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_n,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_e,      focusstack,     {.i = -1 } },
