@@ -760,9 +760,13 @@ drawbar(Monitor *m)
 	if ((w = m->ww - tw - x) > bh) {
 		if (m->sel) {
 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+			if (m->sel->isfloating) {
+                                int fw = TEXTW("(f)") - (lrpad / 2);
+                                drw_text(drw, x, 0, fw, bh, lrpad / 2, "(f)", 0);
+                                x += fw;
+                                w = m->ww - tw - x;
+                        }
 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
-			if (m->sel->isfloating)
-				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
 		} else {
 			drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_rect(drw, x, 0, w, bh, 1, 1);

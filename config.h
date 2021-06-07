@@ -41,6 +41,7 @@ static const Rule rules[] = {
 	{ "Thunderbird",      "Msgcompose", NULL,       1 << 3,       0,           -1 },
 	{ "jetbrains-studio", NULL,         NULL,       1 << 4,       1,           -1 },
         { "XClipboard",       NULL,         NULL,       0,            1,           -1 },
+        { "feh",              "feh",        NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -75,7 +76,7 @@ static const char *tmuxcmd[]    = { "st", "-e", "tmux", NULL };
 static const char *attachcmd[]  = { "st", "-e", "tmux", "attach", NULL };
 
 static const char *ffoxcmd[]    = { "firefox", NULL };
-static const char *tbirdcmd[]   = { "thunderbird", NULL };
+static const char *tbirdcmd[]   = { "tbird", NULL };
 
 static const char *volupcmd[]   = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%",    NULL };
 static const char *voldncmd[]   = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%",    NULL };
