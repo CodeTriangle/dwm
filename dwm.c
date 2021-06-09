@@ -30,6 +30,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 #include <X11/cursorfont.h>
 #include <X11/keysym.h>
 #include <X11/Xatom.h>
@@ -164,7 +165,7 @@ static Monitor *createmon(void);
 static void deck(Monitor *m);
 static void destroynotify(XEvent *e);
 static void detach(Client *c);
-static Client *detachtop();
+static Client *detachtop(Client *c);
 static void detachstack(Client *c);
 static Monitor *dirtomon(int dir);
 static void drawbar(Monitor *m);
@@ -193,6 +194,7 @@ static void monocle(Monitor *m);
 static void motionnotify(XEvent *e);
 static void movemouse(const Arg *arg);
 static Client *nexttiled(Client *c);
+static Client *nexttagged(Client *c);
 static void pop(Client *);
 static void propertynotify(XEvent *e);
 static void quit(const Arg *arg);
@@ -277,6 +279,21 @@ static Display *dpy;
 static Drw *drw;
 static Monitor *mons, *selmon;
 static Window root, wmcheckwin;
+
+static int logfd;
+
+void logclients() {
+    int i;
+    Client *c;
+
+    dprintf(logfd, "LOG OF CLIENTS:\n");
+    for (i = 0, c = selmon->clients; c; c = c->next, i++) {
+        dprintf(logfd, "[%d] (%d) \"%s\" @@ %dx%d+%d+%d\n",
+            i, c->tags, c->name, c->w, c->h, c->x, c->y
+        );
+    }
+    dprintf(logfd, "\n");
+}
 
 /* configuration, allows nested code to access above variables */
 #include "config.h"
@@ -430,18 +447,35 @@ attachtop(Client *c)
 {
 	int n;
 	Monitor *m = selmon;
-	Client *below;
+        Client *before;
 
-	for (n = 1, below = c->mon->clients;
-		below && below->next && (below->isfloating || !ISVISIBLEONTAG(below, c->tags) || n != m->nmaster);
-		n = below->isfloating || !ISVISIBLEONTAG(below, c->tags) ? n + 0 : n + 1, below = below->next);
+        //dprintf(logfd, "nexttiled: [%d] \"%s\"\n", n, below->name);
+        //logclients();
+        //dprintf(logfd, "attachtop\n\n");
+
+	//for (n = 1, below = c->mon->clients;
+	// 	below && below->next && (below->isfloating || !ISVISIBLEONTAG(below, c->tags) || n != m->nmaster);
+	// 	n = below->isfloating || !ISVISIBLEONTAG(below, c->tags) ? n + 0 : n + 1, below = below->next) {
+        //    dprintf(logfd, "master area window %d: \"%s\"\n", n, below->name);
+        //}
+        
+	//for (n = 1; n != m->nmaster; below = nexttagged(below), n++);
+
+        for (n = 1, before = nexttiled(c->mon->clients);
+                before && before->next && n < m->nmaster;
+                before = nexttiled(before->next), n++);
+        
+        //dprintf(logfd, "current 'below': [%d] \"%s\"\n", n, below->name);
+
 	c->next = NULL;
-	if (below) {
-		c->next = below->next;
-		below->next = c;
+	if (c) {
+		c->next = before->next;
+		before->next = c;
 	}
 	else
 		c->mon->clients = c;
+
+        logclients();
 }
 
 void
@@ -748,16 +782,22 @@ detach(Client *c) {
 Client *
 detachtop(Client *c)
 {
-	int n;
+	int n = 0;
 	Monitor *m = selmon;
-	Client *below;
 
-	for (n = 1, below = c->mon->clients;
-		below && below->next && (below->isfloating || !ISVISIBLEONTAG(below, c->tags) || n != m->nmaster);
-		n = below->isfloating || !ISVISIBLEONTAG(below, c->tags) ? n + 0 : n + 1, below = below->next);
-        c = below->next;
-        below->next = below->next->next;
-        
+        // dprintf(logfd, "detachtop\n\n");
+        // logclients();
+        // dprintf(logfd, "nexttiled: [%d] (%d) \"%s\"\n", n, c->tags, c->name);
+
+        for (n = 0, c = nexttiled(c->mon->clients);
+                c && c->next && n < m->nmaster;
+                c = nexttiled(c->next), n++);
+
+        // dprintf(logfd, "current 'c': [%d] \"%s\"\n\n", n, c->name);
+
+        detach(c);
+        logclients();
+
         return c;
 }
 
@@ -1315,6 +1355,16 @@ movemouse(const Arg *arg)
 }
 
 Client *
+nexttagged(Client *c) {
+	Client *walked = c->mon->clients;
+	for(;
+		walked && (walked->isfloating || !ISVISIBLEONTAG(walked, c->tags));
+		walked = walked->next
+	);
+	return walked;
+}
+
+Client *
 nexttiled(Client *c)
 {
 	for (; c && (c->isfloating || !ISVISIBLE(c)); c = c->next);
@@ -1747,6 +1797,8 @@ setup(void)
 	XSelectInput(dpy, root, wa.event_mask);
 	grabkeys();
 	focus(NULL);
+
+        logfd = open("/home/reuben/dwmlog.txt", O_WRONLY|O_APPEND);
 }
 
 
