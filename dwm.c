@@ -796,7 +796,9 @@ detachtop(Client *c)
 
         // dprintf(logfd, "current 'c': [%d] \"%s\"\n\n", n, c->name);
 
-        detach(c);
+        if (c) {
+            detach(c);
+        }
         logclients();
 
         return c;
