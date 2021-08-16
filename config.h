@@ -10,34 +10,39 @@ static const char *fonts[]          = { "tewi:size=9" };
 static const char dmenufont[]       = "tewi:size=9";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
+static const char col_gray3[]       = "#888888";
+static const char col_gray4[]       = "#bbbbbb";
+static const char col_gray5[]       = "#eeeeee";
 static const char col_cyan[]        = "#005577";
 static const char col_ored1[]       = "#ff4500";
 static const char col_ored2[]       = "#992900";
 static const char col_mprp1[]       = "MediumPurple4";
 static const char col_mprp2[]       = "MediumPurple"; 
 static const char col_mprp3[]       = "MediumPurple1";
+static const char col_gbbg1[]       = "#3c3836";
+static const char col_gbfg4[]       = "#a89984";
+static const char col_gbfg3[]       = "#bdae93";
+static const char col_gbbg4[]       = "#7c6f64";
+static const char col_gbfg1[]       = "#ebdbb2";
+static const char col_gbfg0[]       = "#fbf1c7";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_mprp3, col_gray1, col_gray3 },
-	[SchemeSel]  = { col_gray3, col_mprp1, col_mprp2 },
+	[SchemeNorm] = { col_gbfg3, col_gbbg4, col_gbfg3 },
+	[SchemeSel]  = { col_gbfg4, col_gbbg1, col_gbfg1 },
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *alttags[] = { "1*", "2*", "3*", "4*", "5*", "6*", "7*", "8*", "9*" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7" };
+static const char *alttags[] = { "1*", "2*", "3*", "4*", "5*", "6*", "7*" };
 
 static const char *tagsel[][2] = {
-	{ "#ffffff", "#ff0000" },
-	{ "#ffffff", "#ff7f00" },
-	{ "#000000", "#ffff00" },
-	{ "#000000", "#00ff00" },
-	{ "#ffffff", "#0000ff" },
-	{ "#ffffff", "#4b0082" },
-	{ "#ffffff", "#9400d3" },
-	{ "#000000", "#ffffff" },
-	{ "#ffffff", "#000000" },
+	{ "#1d2021", "#cc241d" }, // red
+	{ "#1d2021", "#d65d0e" }, // orange
+	{ "#1d2021", "#d79921" }, // yellow
+	{ "#1d2021", "#98971a" }, // green
+	{ "#1d2021", "#689d6a" }, // cyan
+	{ "#1d2021", "#458588" }, // blue
+	{ "#1d2021", "#b16286" }, // magenta
 };
 
 static const Rule rules[] = {
