@@ -194,7 +194,6 @@ static void monocle(Monitor *m);
 static void motionnotify(XEvent *e);
 static void movemouse(const Arg *arg);
 static Client *nexttiled(Client *c);
-static Client *nexttagged(Client *c);
 static void pop(Client *);
 static void propertynotify(XEvent *e);
 static void quit(const Arg *arg);
@@ -995,22 +994,38 @@ focusmon(const Arg *arg)
 void
 focusstack(const Arg *arg)
 {
-	Client *c = NULL, *i;
+	Client *c = NULL, *i = NULL;
+        int n = 0, maxn = 0;
 
 	if (!selmon->sel)
 		return;
+
+        if (selmon->lt[selmon->sellt]->arrange == *deck) {
+                maxn = selmon->nmaster + 1;
+
+                for (i = selmon->clients; i && i != selmon->sel; i = i->next)
+                        if (ISVISIBLE(i))
+                                n++;
+                n++;
+        }
+
 	if (arg->i > 0) {
-		for (c = selmon->sel->next; c && !ISVISIBLE(c); c = c->next);
+                if (!maxn || n != maxn)
+                        for (c = selmon->sel->next; c && !ISVISIBLE(c); c = c->next);
+
 		if (!c)
 			for (c = selmon->clients; c && !ISVISIBLE(c); c = c->next);
 	} else {
-		for (i = selmon->clients; i != selmon->sel; i = i->next)
-			if (ISVISIBLE(i))
-				c = i;
+                if (!maxn || n != 1)
+                        for (i = selmon->clients; i != selmon->sel; i = i->next)
+                                if (ISVISIBLE(i))
+                                        c = i;
 		if (!c)
-			for (; i; i = i->next)
-				if (ISVISIBLE(i))
+			for (i = i ? i : selmon->sel; i; i = i->next)
+				if (ISVISIBLE(i) && (!maxn || n <= maxn)) {
 					c = i;
+                                        n++;
+                                }
 	}
 	if (c) {
 		focus(c);
@@ -1353,16 +1368,6 @@ movemouse(const Arg *arg)
 		selmon = m;
 		focus(NULL);
 	}
-}
-
-Client *
-nexttagged(Client *c) {
-	Client *walked = c->mon->clients;
-	for(;
-		walked && (walked->isfloating || !ISVISIBLEONTAG(walked, c->tags));
-		walked = walked->next
-	);
-	return walked;
 }
 
 Client *
