@@ -35,14 +35,14 @@ static const char *colors[][3]      = {
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7" };
 static const char *alttags[] = { "1*", "2*", "3*", "4*", "5*", "6*", "7*" };
 
-static const char *tagsel[][2] = {
-	{ "#1d2021", "#cc241d" }, // red
-	{ "#1d2021", "#d65d0e" }, // orange
-	{ "#1d2021", "#d79921" }, // yellow
-	{ "#1d2021", "#98971a" }, // green
-	{ "#1d2021", "#689d6a" }, // cyan
-	{ "#1d2021", "#458588" }, // blue
-	{ "#1d2021", "#b16286" }, // magenta
+static const char *tagsel[][3] = {
+	{ "#1d2021", "#cc241d", "#fb4934" }, // red
+	{ "#1d2021", "#d65d0e", "#fe8019" }, // orange
+	{ "#1d2021", "#d79921", "#fabd2f" }, // yellow
+	{ "#1d2021", "#98971a", "#b8bb26" }, // green
+	{ "#1d2021", "#689d6a", "#8ec07c" }, // cyan
+	{ "#1d2021", "#458588", "#83a598" }, // blue
+	{ "#1d2021", "#b16286", "#d3869b" }, // magenta
 };
 
 static const Rule rules[] = {

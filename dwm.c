@@ -945,6 +945,9 @@ expose(XEvent *e)
 void
 focus(Client *c)
 {
+        int i;
+        Clr *clr = NULL;
+
 	if (!c || !ISVISIBLE(c))
 		for (c = selmon->stack; c && !ISVISIBLE(c); c = c->snext);
 	if (selmon->sel && selmon->sel != c)
@@ -957,7 +960,17 @@ focus(Client *c)
 		detachstack(c);
 		attachstack(c);
 		grabbuttons(c, 1);
-		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
+
+                for (i = 0; i < LENGTH(tags); i++) {
+                        if (c->tags & selmon->tagset[selmon->seltags] & 1 << i) {
+                                clr = tagscheme[i];
+                                break;
+                        }
+                }
+
+                if (!clr) { clr = scheme[SchemeSel]; }
+
+		XSetWindowBorder(dpy, c->win, clr[ColBorder].pixel);
 		setfocus(c);
 	} else {
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
@@ -1783,7 +1796,7 @@ setup(void)
 		scheme[i] = drw_scm_create(drw, colors[i], 3);
 	tagscheme = ecalloc(LENGTH(tagsel), sizeof(Clr *));
 	for (i = 0; i < LENGTH(tagsel); i++)
-		tagscheme[i] = drw_scm_create(drw, tagsel[i], 2);
+		tagscheme[i] = drw_scm_create(drw, tagsel[i], 3);
 	/* init bars */
 	updatebars();
 	updatestatus();
