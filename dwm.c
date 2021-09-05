@@ -125,6 +125,7 @@ struct Monitor {
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
+        Clr *seltagscheme;
 	int showbar;
 	int topbar;
 	Client *clients;
@@ -718,6 +719,8 @@ createmon(void)
 	m->lt[0] = &layouts[0];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
+        m->seltagscheme = tagscheme[0];
+
 	m->pertag = ecalloc(1, sizeof(Pertag));
 	m->pertag->curtag = m->pertag->prevtag = 1;
 
@@ -861,7 +864,7 @@ drawbar(Monitor *m)
 		x += w;
 	}
 	w = blw = TEXTW(m->ltsymbol);
-	drw_setscheme(drw, scheme[SchemeNorm]);
+	drw_setscheme(drw, m->seltagscheme);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
 	if ((w = m->ww - tw - x) > bh) {
@@ -1768,6 +1771,15 @@ setup(void)
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
 	bh = drw->fonts->h + 2;
+	/* init appearance */
+	if (LENGTH(tags) > LENGTH(tagsel))
+		die("too few color schemes for the tags");
+	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
+	for (i = 0; i < LENGTH(colors); i++)
+		scheme[i] = drw_scm_create(drw, colors[i], 3);
+	tagscheme = ecalloc(LENGTH(tagsel), sizeof(Clr *));
+	for (i = 0; i < LENGTH(tagsel); i++)
+		tagscheme[i] = drw_scm_create(drw, tagsel[i], 3);
 	updategeom();
 	/* init atoms */
 	utf8string = XInternAtom(dpy, "UTF8_STRING", False);
@@ -1788,15 +1800,6 @@ setup(void)
 	cursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
 	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
 	cursor[CurMove] = drw_cur_create(drw, XC_fleur);
-	/* init appearance */
-	if (LENGTH(tags) > LENGTH(tagsel))
-		die("too few color schemes for the tags");
-	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
-	for (i = 0; i < LENGTH(colors); i++)
-		scheme[i] = drw_scm_create(drw, colors[i], 3);
-	tagscheme = ecalloc(LENGTH(tagsel), sizeof(Clr *));
-	for (i = 0; i < LENGTH(tagsel); i++)
-		tagscheme[i] = drw_scm_create(drw, tagsel[i], 3);
 	/* init bars */
 	updatebars();
 	updatestatus();
@@ -2319,6 +2322,8 @@ view(const Arg *arg)
 	selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag];
 	selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
 	selmon->lt[selmon->sellt^1] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt^1];
+
+        selmon->seltagscheme = tagscheme[selmon->pertag->curtag-1];
 
 	if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
 		togglebar(NULL);
