@@ -25,6 +25,7 @@ static const char col_gbfg3[]       = "#bdae93";
 static const char col_gbbg4[]       = "#7c6f64";
 static const char col_gbfg1[]       = "#ebdbb2";
 static const char col_gbfg0[]       = "#fbf1c7";
+static const char col_gbbg2[]       = "#584945";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gbfg3, col_gbbg4, col_gbfg3 },
@@ -36,6 +37,7 @@ static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7" };
 static const char *alttags[] = { "1*", "2*", "3*", "4*", "5*", "6*", "7*" };
 
 static const char *tagsel[][3] = {
+        { col_gbfg0, col_gbbg2, col_gbfg1 }, // all
 	{ "#1d2021", "#cc241d", "#fb4934" }, // red
 	{ "#1d2021", "#d65d0e", "#fe8019" }, // orange
 	{ "#1d2021", "#d79921", "#fabd2f" }, // yellow

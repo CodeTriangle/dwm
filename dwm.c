@@ -719,7 +719,7 @@ createmon(void)
 	m->lt[0] = &layouts[0];
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
-        m->seltagscheme = tagscheme[0];
+        m->seltagscheme = tagscheme[1];
 
 	m->pertag = ecalloc(1, sizeof(Pertag));
 	m->pertag->curtag = m->pertag->prevtag = 1;
@@ -859,7 +859,7 @@ drawbar(Monitor *m)
 	for (i = 0; i < LENGTH(tags); i++) {
 		tagtext = occ & 1 << i ? alttags[i] : tags[i];
 		w = TEXTW(tagtext);
-		drw_setscheme(drw, (m->tagset[m->seltags] & 1 << i ? tagscheme[i] : scheme[SchemeNorm]));
+		drw_setscheme(drw, (m->tagset[m->seltags] & 1 << i ? tagscheme[i+1] : scheme[SchemeNorm]));
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tagtext, urg & 1 << i);
 		x += w;
 	}
@@ -966,7 +966,7 @@ focus(Client *c)
 
                 for (i = 0; i < LENGTH(tags); i++) {
                         if (c->tags & selmon->tagset[selmon->seltags] & 1 << i) {
-                                clr = tagscheme[i];
+                                clr = tagscheme[i+1];
                                 break;
                         }
                 }
@@ -2249,7 +2249,7 @@ updatestatus(void)
 {
 	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
 		strcpy(stext, "dwm-"VERSION);
-	drawbar(selmon);
+	drawbars();
 }
 
 void
@@ -2323,7 +2323,7 @@ view(const Arg *arg)
 	selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
 	selmon->lt[selmon->sellt^1] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt^1];
 
-        selmon->seltagscheme = tagscheme[selmon->pertag->curtag-1];
+        selmon->seltagscheme = tagscheme[selmon->pertag->curtag];
 
 	if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
 		togglebar(NULL);
