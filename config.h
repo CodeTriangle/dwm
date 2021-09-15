@@ -61,6 +61,9 @@ static const Rule rules[] = {
 	{ "jetbrains-studio", NULL,         NULL,       1 << 4,       1,           -1 },
         { "XClipboard",       NULL,         NULL,       0,            1,           -1 },
         { "feh",              "feh",        NULL,       0,            1,           -1 },
+        { "discord",          NULL,         NULL,       1 << 4,       0,           -1 },
+        { "Steam",            NULL,         NULL,       1 << 5,       0,           -1 },
+        { "Steam",            NULL,         "News",     0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -108,7 +111,9 @@ static const char *xbldncmd[]   = { "xbacklight", "-10", NULL };
 static const char *sleepcmd[]   = { "sudo", "-A", "zzz", NULL };
 
 static const char *scrotcmd[]   = { "scrot", "-e", "mv $f screenshots", NULL };
-static const char *scrotscmd[]  = { "scrot", "-s",  "-e", "mv $f screenshots", NULL };
+static const char *scrotscmd[]  = { "scrot", "-s", "-e", "mv $f screenshots", NULL };
+static const char *scrotccmd[]  = { "scrot", "-e", "xclip -selection clipboard -t image/png -i $f ; mv $f screenshots", NULL };
+static const char *scrotcscmd[] = { "scrot", "-s", "-e", "xclip -selection clipboard -t image/png -i $f ; mv $f screenshots", NULL };
 
 static const char *xclipcmd[]   = { "xclipboard", "-bg", "rgb:5/8/9", "-fg", "rgb:D/D/D", "-bd", "rgb:C/C/C", "-fn", "-*-tewi-medium-r-*-*-11-*-*-*-*-*-*-*", "-geometry", "300x50+0-0", NULL };
 
@@ -131,6 +136,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F1,     spawn,          {.v = sleepcmd } },
 	{ MODKEY,                       XK_s,      spawn,          {.v = scrotcmd } },
 	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = scrotscmd } },
+	{ MODKEY,                       XK_r,      spawn,          {.v = scrotccmd } },
+	{ MODKEY|ShiftMask,             XK_r,      spawn,          {.v = scrotcscmd } },
         { MODKEY,                       XK_c,      spawn,          {.v = xclipcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
