@@ -1871,8 +1871,16 @@ sigchld(int unused)
 void
 spawn(const Arg *arg)
 {
-	if (arg->v == dmenucmd)
+        int i;
+	if (arg->v == dmenucmd) {
 		dmenumon[0] = '0' + selmon->num;
+                for (i = 0; i < LENGTH(tags); i++)
+                        if (selmon->tagset[selmon->seltags] & 1 << i) {
+                                strcpy(dmenusb, tagsel[i+1][1]);
+                                strcpy(dmenusf, tagsel[i+1][0]);
+                                break;
+                        }
+        }
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));
