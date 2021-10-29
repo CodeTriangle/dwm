@@ -98,6 +98,7 @@ static const char *dmenucmd[]   = {
     "dmenu_run", "-m", dmenumon, "-g", "7", "-l", "5",
     "-nb", col_gbbg1, "-nf", col_gbfg4,
     "-sb", dmenusb, "-sf", dmenusf,
+    "-fn", dmenufont,
 };
 
 static const char *termcmd[]    = { "st", NULL };
@@ -116,8 +117,8 @@ static const char *xbldncmd[]   = { "xbacklight", "-10", NULL };
 
 static const char *sleepcmd[]   = { "sudo", "-A", "zzz", NULL };
 
-static const char *scrotcmd[]  = { "scrot", "-e", "xclip -selection clipboard -t image/png -i $f ; mv $f screenshots ; ln -sf screenshots/$f ss.png", NULL };
-static const char *scrotscmd[] = { "scrot", "-s", "-e", "xclip -selection clipboard -t image/png -i $f ; mv $f screenshots ; ln -sf screenshots/$f ss.png", NULL };
+static const char *scrotcmd[]  = { "scrot", "-f", "-e", "xclip -selection clipboard -t image/png -i $f ; mv $f screenshots ; ln -sf screenshots/$f ss.png", NULL };
+static const char *scrotscmd[] = { "scrot", "-sf", "-e", "xclip -selection clipboard -t image/png -i $f ; mv $f screenshots ; ln -sf screenshots/$f ss.png", NULL };
 
 static const char *xclipcmd[]   = { "xclipboard", "-bg", "rgb:5/8/9", "-fg", "rgb:D/D/D", "-bd", "rgb:C/C/C", "-fn", "-*-tewi-medium-r-*-*-11-*-*-*-*-*-*-*", "-geometry", "300x50+0-0", NULL };
 
@@ -175,6 +176,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ControlMask,           XK_q,      quit,           {1} }, 
 };
 
 /* button definitions */
