@@ -21,6 +21,7 @@ static const char col_mprp2[]       = "MediumPurple";
 static const char col_mprp3[]       = "MediumPurple1";
 static const char col_gbbg1[]       = "#3c3836";
 static const char col_gbfg4[]       = "#a89984";
+static const char col_gbgr[]        = "#928374";
 static const char col_gbfg3[]       = "#bdae93";
 static const char col_gbbg4[]       = "#7c6f64";
 static const char col_gbfg1[]       = "#ebdbb2";
@@ -28,8 +29,8 @@ static const char col_gbfg0[]       = "#fbf1c7";
 static const char col_gbbg2[]       = "#584945";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gbfg3, col_gbbg4, col_gbfg3 },
-	[SchemeSel]  = { col_gbfg4, col_gbbg1, col_gbfg1 },
+	[SchemeNorm] = { col_gbfg3, col_gbbg4, col_gbfg4 },
+	[SchemeSel]  = { col_gbfg4, col_gbbg1, col_gbfg4 },
 };
 
 /* tagging */
@@ -37,14 +38,14 @@ static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7" };
 static const char *alttags[] = { "1*", "2*", "3*", "4*", "5*", "6*", "7*" };
 
 static const char *tagsel[][3] = {
-        { col_gbfg0, col_gbbg2, col_gbfg1 }, // all
-	{ "#1d2021", "#cc241d", "#fb4934" }, // red
-	{ "#1d2021", "#d65d0e", "#fe8019" }, // orange
-	{ "#1d2021", "#d79921", "#fabd2f" }, // yellow
-	{ "#1d2021", "#98971a", "#b8bb26" }, // green
-	{ "#1d2021", "#689d6a", "#8ec07c" }, // cyan
-	{ "#1d2021", "#458588", "#83a598" }, // blue
-	{ "#1d2021", "#b16286", "#d3869b" }, // magenta
+        { col_gbfg0, col_gbbg2, col_gbfg4 }, // all
+	{ "#1d2021", "#cc241d", "#fb4944" },// "#9d0006" }, //  // red
+	{ "#1d2021", "#d65d0e", "#fe8019" },// "#af3a03" }, //  // orange
+	{ "#1d2021", "#d79921", "#fabd2f" },// "#b57614" }, //  // yellow
+	{ "#1d2021", "#98971a", "#b8bb26" },// "#79740e" }, //  // green
+	{ "#1d2021", "#689d6a", "#7ec068" },//"#8ec07c" },// "#427b58" }, //  // cyan
+	{ "#1d2021", "#458588", "#15a598" },// "#83a598" },// "#076678" }, //  // blue
+	{ "#1d2021", "#b16286", "#d85aa6" },//"#d3869b" },// "#8f3f71" }, //  // magenta
 };
 
 static const Rule rules[] = {
@@ -118,7 +119,7 @@ static const char *xbldncmd[]   = { "xbacklight", "-10", NULL };
 static const char *sleepcmd[]   = { "sudo", "-A", "zzz", NULL };
 
 static const char *scrotcmd[]  = { "scrot", "-f", "-e", "xclip -selection clipboard -t image/png -i $f ; mv $f screenshots ; ln -sf screenshots/$f ss.png", NULL };
-static const char *scrotscmd[] = { "scrot", "-sf", "-e", "xclip -selection clipboard -t image/png -i $f ; mv $f screenshots ; ln -sf screenshots/$f ss.png", NULL };
+static const char *scrotscmd[] = { "scrot", "-s", "-f", "-e", "xclip -selection clipboard -t image/png -i $f ; mv $f screenshots ; ln -sf screenshots/$f ss.png", NULL };
 
 static const char *xclipcmd[]   = { "xclipboard", "-bg", "rgb:5/8/9", "-fg", "rgb:D/D/D", "-bd", "rgb:C/C/C", "-fn", "-*-tewi-medium-r-*-*-11-*-*-*-*-*-*-*", "-geometry", "300x50+0-0", NULL };
 
