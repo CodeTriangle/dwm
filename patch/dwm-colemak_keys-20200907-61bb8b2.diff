@@ -1,0 +1,64 @@
+From 4762fa3e13aca17818ed6fa6c7a71322c76be189 Mon Sep 17 00:00:00 2001
+From: runrin <run.rin@rin.run>
+Date: Mon, 7 Sep 2020 07:20:07 -0700
+Subject: [PATCH] hnei colemak keys; update man page to reflect changes
+
+---
+ config.def.h | 10 +++++-----
+ dwm.1        | 10 +++++-----
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 1c0b587..501fe4e 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -64,12 +64,12 @@ static Key keys[] = {
+ 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+ 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+ 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
++	{ MODKEY,                       XK_n,      focusstack,     {.i = +1 } },
++	{ MODKEY,                       XK_e,      focusstack,     {.i = -1 } },
++	{ MODKEY,                       XK_l,      incnmaster,     {.i = +1 } },
++	{ MODKEY,                       XK_u,      incnmaster,     {.i = -1 } },
+ 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
++	{ MODKEY,                       XK_i,      setmfact,       {.f = +0.05} },
+ 	{ MODKEY,                       XK_Return, zoom,           {0} },
+ 	{ MODKEY,                       XK_Tab,    view,           {0} },
+ 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+diff --git a/dwm.1 b/dwm.1
+index ddc8321..776cd13 100644
+--- a/dwm.1
++++ b/dwm.1
+@@ -92,19 +92,19 @@ Sets monocle layout.
+ .B Mod1\-space
+ Toggles between current and previous layout.
+ .TP
+-.B Mod1\-j
++.B Mod1\-n
+ Focus next window.
+ .TP
+-.B Mod1\-k
++.B Mod1\-e
+ Focus previous window.
+ .TP
+-.B Mod1\-i
++.B Mod1\-l
+ Increase number of windows in master area.
+ .TP
+-.B Mod1\-d
++.B Mod1\-u
+ Decrease number of windows in master area.
+ .TP
+-.B Mod1\-l
++.B Mod1\-i
+ Increase master area size.
+ .TP
+ .B Mod1\-h
+-- 
+2.28.0
+
